@@ -1,0 +1,44 @@
+import bpy
+
+# Set the file path 
+file_path = r"C:\Users\Yerdana\Downloads\poly.glb"
+
+# Import the GLB file
+bpy.ops.import_scene.gltf(filepath=file_path)
+
+# Get a reference to the imported object
+imported_object = bpy.context.active_object
+
+# Add Decimate modifier to simplify the mesh
+decimate_mod = imported_object.modifiers.new("Decimate", 'DECIMATE')
+decimate_mod.ratio = 0.5  # Adjust the ratio as needed
+
+# Apply the Decimate modifier
+bpy.ops.object.modifier_apply(modifier=decimate_mod.name)
+
+# Remove duplicate vertices
+bpy.ops.object.mode_set(mode='EDIT')
+bpy.ops.mesh.select_all(action='SELECT')
+bpy.ops.mesh.remove_doubles()
+bpy.ops.object.mode_set(mode='OBJECT')
+
+# Fill holes
+bpy.ops.object.mode_set(mode='EDIT')
+bpy.ops.mesh.select_all(action='SELECT')
+bpy.ops.mesh.fill_holes()
+bpy.ops.object.mode_set(mode='OBJECT')
+
+# Smoothen the mesh by shading it smoothly
+bpy.ops.object.select_all(action='DESELECT')
+imported_object.select_set(True)
+bpy.context.view_layer.objects.active = imported_object
+bpy.ops.object.shade_smooth()
+
+# Update the scene to reflect the changes
+bpy.context.view_layer.update()
+
+# Set the file path for the cleaned mesh
+cleaned_mesh_path = r"C:\Users\Yerdana\Downloads\poly2.glb"
+
+# Export the cleaned mesh as STL
+bpy.ops.export_mesh.stl(filepath=cleaned_mesh_path)
