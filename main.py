@@ -5,11 +5,9 @@ import os
 from mathutils import Vector
 
 def import_glb():
-    import bpy
     from bpy.types import Operator
     from bpy.props import StringProperty, BoolProperty
     from bpy_extras.io_utils import ImportHelper
-    import os
 
     # Generates file browser pop-up window
     class OT_TestOpenFilebrowser(Operator, ImportHelper):
@@ -39,19 +37,17 @@ def import_glb():
             bpy.ops.import_scene.gltf(filepath=self.filepath)
             
             return {'FINISHED'}
-
-    def main():
-        # Instantiate your file browser operation with arguments
-        bpy.utils.register_class(OT_TestOpenFilebrowser)
-        result = bpy.ops.test.open_filebrowser('INVOKE_DEFAULT')
-        
-        # Check if operation is finished
-        if result == {'FINISHED'}:
-            # Run the next step in your script
-            print("File browser operation finished, running next step...")
-        else:
-            # Handle potential errors or other outcomes
-            print("File browser operation failed or was canceled.")
+    # Instantiate your file browser operation with arguments
+    bpy.utils.register_class(OT_TestOpenFilebrowser)
+    result = bpy.ops.test.open_filebrowser('INVOKE_DEFAULT')
+    
+    # Check if operation is finished
+    if result == {'FINISHED'}:
+        # Run the next step in your script
+        print("File browser operation finished, running next step...")
+    else:
+        # Handle potential errors or other outcomes
+        print("File browser operation failed or was canceled.")
 
     return
 
@@ -212,7 +208,7 @@ def temp():
 # Run the code
 
 import_glb() #working
-SelectFace() #working
+SelectFace() 
 ManualAdjustment()
 DrawRectangle()
 GenerateClippedSurface()
