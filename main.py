@@ -4,6 +4,14 @@ import bpy
 import os
 from mathutils import Vector
 
+def clear_scene():
+    # Delete all mesh objects
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_by_type(type='MESH')
+    bpy.ops.object.delete()
+
+    return
+
 def import_glb():
     from bpy.types import Operator
     from bpy.props import StringProperty, BoolProperty
@@ -86,13 +94,6 @@ def CutNurbs():
 
 def temp():
 
-    # Path to the .glb file(replace the path file to need specific file location
-    file_path = r"C:\Users\Yerdana\Downloads\poly.glb"
-
-    # Delete all mesh objects
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.ops.object.select_by_type(type='MESH')
-    bpy.ops.object.delete()
 
     # Import the .glb file
     bpy.ops.import_scene.gltf(filepath=file_path)
@@ -206,7 +207,7 @@ def temp():
 
 
 # Run the code
-
+clear_scene() #working
 import_glb() #working
 SelectFace() 
 ManualAdjustment()
