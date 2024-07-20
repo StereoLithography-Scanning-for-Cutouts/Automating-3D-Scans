@@ -4,7 +4,59 @@ import bpy
 import os
 from mathutils import Vector
 
+def clear_scene():
+    # Delete all mesh objects
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_by_type(type='MESH')
+    bpy.ops.object.delete()
+
+    return
+
 def import_glb():
+    from bpy.types import Operator
+    from bpy.props import StringProperty, BoolProperty
+    from bpy_extras.io_utils import ImportHelper
+
+    # Generates file browser pop-up window
+    class OT_TestOpenFilebrowser(Operator, ImportHelper):
+        bl_idname = "test.open_filebrowser"
+        bl_label = "Open the file browser (yay)"
+        
+        filter_glob: StringProperty(
+            default='*.glb',
+            options={'HIDDEN'}
+        )
+        
+        some_boolean: BoolProperty(
+            name='Do a thing',
+            description='Do a thing with the file you\'ve selected',
+            default=True,
+        )
+
+        def execute(self, context):
+            """Do something with the selected file(s)."""
+            filename, extension = os.path.splitext(self.filepath)
+            print('Selected file:', self.filepath)
+            print('File name:', filename)
+            print('File extension:', extension)
+            print('Some Boolean:', self.some_boolean)
+            
+            # Import the selected file into Blender
+            bpy.ops.import_scene.gltf(filepath=self.filepath)
+            
+            return {'FINISHED'}
+    # Instantiate your file browser operation with arguments
+    bpy.utils.register_class(OT_TestOpenFilebrowser)
+    result = bpy.ops.test.open_filebrowser('INVOKE_DEFAULT')
+    
+    # Check if operation is finished
+    if result == {'FINISHED'}:
+        # Run the next step in your script
+        print("File browser operation finished, running next step...")
+    else:
+        # Handle potential errors or other outcomes
+        print("File browser operation failed or was canceled.")
+
     return
 
 def SelectFace():
@@ -42,13 +94,6 @@ def CutNurbs():
 
 def temp():
 
-    # Path to the .glb file(replace the path file to need specific file location
-    file_path = r"C:\Users\Yerdana\Downloads\poly.glb"
-
-    # Delete all mesh objects
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.ops.object.select_by_type(type='MESH')
-    bpy.ops.object.delete()
 
     # Import the .glb file
     bpy.ops.import_scene.gltf(filepath=file_path)
@@ -162,9 +207,9 @@ def temp():
 
 
 # Run the code
-
+clear_scene() #working
 import_glb() #working
-SelectFace() #working
+SelectFace() 
 ManualAdjustment()
 DrawRectangle()
 GenerateClippedSurface()
