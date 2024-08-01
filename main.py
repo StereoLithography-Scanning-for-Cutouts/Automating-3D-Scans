@@ -60,6 +60,8 @@ def import_glb():
     return
 
 def SelectFace():
+    # Get the imported object
+    imported_object = bpy.context.selected_objects[0]
     return
 
 def ManualAdjustment():
@@ -93,13 +95,6 @@ def CutNurbs():
     return
 
 def temp():
-
-
-    # Import the .glb file
-    bpy.ops.import_scene.gltf(filepath=file_path)
-
-    # Get the imported object
-    imported_object = bpy.context.selected_objects[0]
 
     # Calculate the dimensions of the imported object
     dimensions = imported_object.dimensions
@@ -209,7 +204,7 @@ def temp():
 # Run the code
 clear_scene() #working
 import_glb() #working
-SelectFace() 
+SelectFace() #working
 ManualAdjustment()
 DrawRectangle()
 GenerateClippedSurface()
