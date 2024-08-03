@@ -44,6 +44,9 @@ def import_glb():
             # Import the selected file into Blender
             bpy.ops.import_scene.gltf(filepath=self.filepath)
             
+            #Note for future use: currently if you want the filebrowser method to work, you will need to run all the 
+            #commands for the entire project within execute. So, selectFace() DrawRectangle() etc will need to be here. 
+
             return {'FINISHED'}
     # Instantiate your file browser operation with arguments
     bpy.utils.register_class(OT_TestOpenFilebrowser)
@@ -60,12 +63,40 @@ def import_glb():
     return
 
 def SelectFace():
+    # Get the imported object
+    imported_object = bpy.context.selected_objects[0]
+    return imported_object
+
+def DrawRectangle(imported_object):
+    # Calculate the dimensions of the imported object
+    dimensions = imported_object.dimensions
+
+    # Create a cube that is 2 times bigger than the imported object(This is done to ensure that the object is fully inside the cube. It is essential to do this. If the cube isnt big enough, there might be some problems) 
+    bpy.ops.mesh.primitive_cube_add(size=2, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(2*dimensions.x, 2*dimensions.y, 2*dimensions.z))
+
+    return
+
+def GenerateBust(imported_object):
+    # Get the cube object
+    cube_object = bpy.context.object
+
+    # Move the cube to the center of the imported object
+    cube_object.location = imported_object.location
+
+    # Perform a boolean intersection operation
+    boolean_modifier = cube_object.modifiers.new(name="Boolean", type='BOOLEAN')
+    boolean_modifier.object = imported_object
+    boolean_modifier.operation = 'INTERSECT'
+    boolean_modifier.solver = 'EXACT'
+
+    # Apply the modifier
+    bpy.ops.object.modifier_apply(modifier=boolean_modifier.name)
+
+    #At this point the cube should be looking like the imported scan. Further modifications will be applied to the cube instead so make sure that the nameing is consistent 
+
     return
 
 def ManualAdjustment():
-    return
-
-def DrawRectangle():
     return
 
 def GenerateClippedSurface():
@@ -83,8 +114,6 @@ def AddThickness():
 def SmoothSurface():
     return
     
-def GenerateBust():
-    return
 
 def GenerateNegative():
     return
@@ -94,35 +123,6 @@ def CutNurbs():
 
 def temp():
 
-
-    # Import the .glb file
-    bpy.ops.import_scene.gltf(filepath=file_path)
-
-    # Get the imported object
-    imported_object = bpy.context.selected_objects[0]
-
-    # Calculate the dimensions of the imported object
-    dimensions = imported_object.dimensions
-
-    # Create a cube that is 2 times bigger than the imported object(This is done to ensure that the object is fully inside the cube. It is essential to do this. If the cube isnt big enough, there might be some problems) 
-    bpy.ops.mesh.primitive_cube_add(size=2, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(2*dimensions.x, 2*dimensions.y, 2*dimensions.z))
-
-    # Get the cube object
-    cube_object = bpy.context.object
-
-    # Move the cube to the center of the imported object
-    cube_object.location = imported_object.location
-
-    # Perform a boolean intersection operation
-    boolean_modifier = cube_object.modifiers.new(name="Boolean", type='BOOLEAN')
-    boolean_modifier.object = imported_object
-    boolean_modifier.operation = 'INTERSECT'
-    boolean_modifier.solver = 'EXACT'
-
-    # Apply the modifier
-    bpy.ops.object.modifier_apply(modifier=boolean_modifier.name)
-
-    #At this point the cube should be looking like the imported scan. Further modifications will be applied to the cube instead so make sure that the nameing is consistent 
 
     # Create a solidify modifier for the cube
     solidify_modifier = cube_object.modifiers.new(name="Solidify", type='SOLIDIFY')
@@ -207,18 +207,20 @@ def temp():
 
 
 # Run the code
+file_path = "C:\\Users\\micha\\Downloads\\MK.glb"
 clear_scene() #working
-import_glb() #working
-SelectFace() 
+# import_glb() #not working: see note in code, this function seems to be run in parallel, so the code isn't waiting to return before continuing, so nothing below will work. 
+bpy.ops.import_scene.gltf(filepath=file_path)
+imported_object=SelectFace() #working
+DrawRectangle(imported_object)
+GenerateBust(imported_object)
 ManualAdjustment()
-DrawRectangle()
 GenerateClippedSurface()
 Nurbs()
 GenerateNurbsSolid()
 AddThickness()
 SmoothSurface()
 SmoothSurface()
-GenerateBust()
 GenerateNegative()
 CutNurbs()
 
