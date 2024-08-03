@@ -44,6 +44,9 @@ def import_glb():
             # Import the selected file into Blender
             bpy.ops.import_scene.gltf(filepath=self.filepath)
             
+            #Note for future use: currently if you want the filebrowser method to work, you will need to run all the 
+            #commands for the entire project within execute. So, selectFace() DrawRectangle() etc will need to be here. 
+
             return {'FINISHED'}
     # Instantiate your file browser operation with arguments
     bpy.utils.register_class(OT_TestOpenFilebrowser)
@@ -204,8 +207,10 @@ def temp():
 
 
 # Run the code
+file_path = "C:\\Users\\micha\\Downloads\\MK.glb"
 clear_scene() #working
-import_glb() #working 
+# import_glb() #not working: see note in code, this function seems to be run in parallel, so the code isn't waiting to return before continuing, so nothing below will work. 
+bpy.ops.import_scene.gltf(filepath=file_path)
 imported_object=SelectFace() #working
 DrawRectangle(imported_object)
 GenerateBust(imported_object)
