@@ -95,7 +95,10 @@ def GenerateBust(imported_object):
     #At this point the cube should be looking like the imported scan. Further modifications will be applied to the cube instead so make sure that the nameing is consistent 
 
     return
-def AddThickness():
+def AddThickness(imported_object):
+    #Get the cube object
+    cube_object = bpy.content.object
+
     # Create a solidify modifier for the cube
     solidify_modifier = cube_object.modifiers.new(name="Solidify", type='SOLIDIFY')
 
@@ -111,7 +114,9 @@ def AddThickness():
    
     return
 
-def SmoothSurface():
+def SmoothSurface(imported_object):
+    #Get the cube object
+    cube_object = bpy.content.object
 
     # Create a smooth modifier for the cube: Smooth deform is used instead of laplace smoothing 
     smooth_modifier = cube_object.modifiers.new(name="Smooth", type='SMOOTH')
@@ -212,12 +217,12 @@ bpy.ops.import_scene.gltf(filepath=file_path)
 imported_object=SelectFace() #working
 DrawRectangle(imported_object)
 GenerateBust(imported_object)
+AddThickness(imported_object)
+SmoothSurface(imported_object)
 ManualAdjustment()
 GenerateClippedSurface()
 Nurbs()
 GenerateNurbsSolid()
-AddThickness()
-SmoothSurface()
 SmoothSurface()
 GenerateNegative()
 CutNurbs()
