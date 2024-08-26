@@ -95,35 +95,7 @@ def GenerateBust(imported_object):
     #At this point the cube should be looking like the imported scan. Further modifications will be applied to the cube instead so make sure that the nameing is consistent 
 
     return
-
-def ManualAdjustment():
-    return
-
-def GenerateClippedSurface():
-    return
-
-def Nurbs():
-    return
-
-def GenerateNurbsSolid():
-    return
-
 def AddThickness():
-    return
-
-def SmoothSurface():
-    return
-    
-
-def GenerateNegative():
-    return
-
-def CutNurbs():
-    return
-
-def temp():
-
-
     # Create a solidify modifier for the cube
     solidify_modifier = cube_object.modifiers.new(name="Solidify", type='SOLIDIFY')
 
@@ -136,6 +108,10 @@ def temp():
 
     # Apply the modifier
     bpy.ops.object.modifier_apply(modifier=solidify_modifier.name)
+   
+    return
+
+def SmoothSurface():
 
     # Create a smooth modifier for the cube: Smooth deform is used instead of laplace smoothing 
     smooth_modifier = cube_object.modifiers.new(name="Smooth", type='SMOOTH')
@@ -151,6 +127,28 @@ def temp():
     #At this point, imported scan should be looking smooth and have some thickness. Adjust the smoothing factors if the scan is not smooth enough 
     #Further process from here is to generate the positive and negative mould 
 
+    return
+    
+
+def ManualAdjustment():
+    return
+
+def GenerateClippedSurface():
+    return
+
+def Nurbs():
+    return
+
+def GenerateNurbsSolid():
+    return
+
+def GenerateNegative():
+    return
+
+def CutNurbs():
+    return
+
+def temp():
     # Add a new cube  
     bpy.ops.mesh.primitive_cube_add(size=1, enter_editmode=False, align='WORLD', location=(0, 0, 0))
     cube_001 = bpy.context.object
