@@ -97,7 +97,7 @@ def GenerateBust(imported_object):
     return
 def AddThickness(imported_object):
     #Get the cube object
-    cube_object = bpy.content.object
+    cube_object = bpy.context.object
 
     # Create a solidify modifier for the cube
     solidify_modifier = cube_object.modifiers.new(name="Solidify", type='SOLIDIFY')
@@ -116,7 +116,7 @@ def AddThickness(imported_object):
 
 def SmoothSurface(imported_object):
     #Get the cube object
-    cube_object = bpy.content.object
+    cube_object = bpy.context.object
 
     # Create a smooth modifier for the cube: Smooth deform is used instead of laplace smoothing 
     smooth_modifier = cube_object.modifiers.new(name="Smooth", type='SMOOTH')
@@ -176,23 +176,16 @@ def Nurbs():
     
     return
 
+def GenerateNurbsSolid():
+    return
+
 def ManualAdjustment():
     return
 
 def GenerateClippedSurface():
     returns
 
-
-def GenerateNurbsSolid():
-    return
-
 def GenerateNegative():
-    return
-
-def CutNurbs():
-    return
-
-def temp():
     # Add a new cube  
     bpy.ops.mesh.primitive_cube_add(size=1, enter_editmode=False, align='WORLD', location=(0, 0, 0))
     cube_001 = bpy.context.object
@@ -244,9 +237,10 @@ def temp():
     # Apply the modifier
     bpy.ops.object.modifier_apply(modifier=boolean_modifier.name)
 
+    return
 
-
-
+def CutNurbs():
+    return
 
 # Run the code
 file_path = "C:\\Users\\micha\\Downloads\\MK.glb"
