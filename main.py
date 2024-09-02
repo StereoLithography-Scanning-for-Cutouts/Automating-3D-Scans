@@ -62,7 +62,7 @@ def import_glb():
 
     return
 
-def SelectFace():
+def SelectMesh():
     # Get the imported object
     imported_object = bpy.context.selected_objects[0]
     return imported_object
@@ -134,15 +134,54 @@ def SmoothSurface(imported_object):
 
     return
     
+def SelectFace(obj_name):
+    # Deselect all objects
+    bpy.ops.object.select_all(action='DESELECT')
+
+    ## Select the object
+    obj = bpy.data.objects["Cube"]
+    obj.select_set(True)
+
+    ## Set the 3D cursor to the object's origin
+    bpy.context.scene.cursor.location = obj.location
+
+    ## Set the origin of the object to the 3D cursor
+    bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+
+    ## Set the origin to the geometry
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
+    
+    # Find the 3D Viewport and adjust the view manually
+    for area in bpy.context.screen.areas: #Loop to determine windows within blender that contain 3D Viewpoint
+        if area.type == 'VIEW_3D':
+            for region in area.regions:
+                if region.type == 'WINDOW': #Select the visual portion of the 3D Viewpoint
+                    # Select the view region data
+                    region_3d = area.spaces.active.region_3d 
+                    
+                    # Define the view location and distance
+                    location = obj.location #Define the view location
+                    distance = (obj.dimensions.length) #Define the view distance equal to the length of the bust
+                    
+                    # Set the view to look at the object's location
+                    region_3d.view_location = location
+                    region_3d.view_distance = distance
+                    
+                    # Set the view rotation to look down the Z-axis (Top View)
+                    region_3d.view_rotation = mathutils.Euler((0, 0, 0), 'XYZ').to_quaternion()
+                    
+    return
+
+def Nurbs():
+    
+    return
 
 def ManualAdjustment():
     return
 
 def GenerateClippedSurface():
-    return
+    returns
 
-def Nurbs():
-    return
 
 def GenerateNurbsSolid():
     return
@@ -214,14 +253,15 @@ file_path = "C:\\Users\\micha\\Downloads\\MK.glb"
 clear_scene() #working
 # import_glb() #not working: see note in code, this function seems to be run in parallel, so the code isn't waiting to return before continuing, so nothing below will work. 
 bpy.ops.import_scene.gltf(filepath=file_path)
-imported_object=SelectFace() #working
+imported_object=SelectMesh() #working
 DrawRectangle(imported_object)
 GenerateBust(imported_object)
 AddThickness(imported_object)
 SmoothSurface(imported_object)
+SelectFace("Cube")
+Nurbs()
 ManualAdjustment()
 GenerateClippedSurface()
-Nurbs()
 GenerateNurbsSolid()
 SmoothSurface()
 GenerateNegative()
