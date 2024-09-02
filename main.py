@@ -134,7 +134,7 @@ def SmoothSurface(imported_object):
 
     return
     
-def SelectFace(obj_name):
+def OrientFace(obj_name):
     # Deselect all objects
     bpy.ops.object.select_all(action='DESELECT')
 
@@ -258,7 +258,7 @@ DrawRectangle(imported_object)
 GenerateBust(imported_object)
 AddThickness(imported_object)
 SmoothSurface(imported_object)
-SelectFace("Cube")
+OrientFace("Cube")
 Nurbs()
 ManualAdjustment()
 GenerateClippedSurface()
