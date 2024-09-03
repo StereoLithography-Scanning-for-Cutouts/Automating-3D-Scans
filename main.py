@@ -2,7 +2,7 @@
 
 import bpy
 import os
-from mathutils import Vector
+import mathutils
 
 def clear_scene():
     # Delete all mesh objects
