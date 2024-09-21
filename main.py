@@ -270,7 +270,7 @@ def CutNurbs():
     return
 
 # Run the code
-file_path = "C:\\Users\\micha\\Downloads\\MK.glb"
+file_path = "C:/Users/reece/Desktop/School or Extra/Coding Project/MK.glb"
 clear_scene() #integrated and working
 # import_glb() #not working: see note in code, this function seems to be run in parallel, so the code isn't waiting to return before continuing, so nothing below will work. 
 bpy.ops.import_scene.gltf(filepath=file_path)
@@ -279,7 +279,7 @@ DrawRectangle(imported_object) #integrated and working
 GenerateBust(imported_object) #integrated and working
 AddThickness(imported_object) #integrated and working 
 SmoothSurface(imported_object) #integrated and working
-OrientFace()
+OrientFace() # Not Working
 Nurbs()
 ManualAdjustment()
 GenerateClippedSurface()
