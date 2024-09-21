@@ -138,45 +138,8 @@ def SmoothSurface(imported_object):
 
     return
     
-def OrientFace(obj_name):
-    # Deselect all objects
-    bpy.ops.object.select_all(action='DESELECT')
 
-    ## Select the object
-    obj = bpy.data.objects["Cube"]
-    obj.select_set(True)
-
-    ## Set the 3D cursor to the object's origin
-    bpy.context.scene.cursor.location = obj.location
-
-    ## Set the origin of the object to the 3D cursor
-    bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
-
-    ## Set the origin to the geometry
-    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY')
-    
-    # Find the 3D Viewport and adjust the view manually
-    for area in bpy.context.screen.areas: #Loop to determine windows within blender that contain 3D Viewpoint
-        if area.type == 'VIEW_3D':
-            for region in area.regions:
-                if region.type == 'WINDOW': #Select the visual portion of the 3D Viewpoint
-                    # Select the view region data
-                    region_3d = area.spaces.active.region_3d 
-                    
-                    # Define the view location and distance
-                    location = obj.location #Define the view location
-                    distance = (obj.dimensions.length) #Define the view distance equal to the length of the bust
-                    
-                    # Set the view to look at the object's location
-                    region_3d.view_location = location
-                    region_3d.view_distance = distance
-                    
-                    # Set the view rotation to look down the Z-axis (Top View)
-                    region_3d.view_rotation = mathutils.Euler((0, 0, 0), 'XYZ').to_quaternion()
-                    
-    return
-
-def OrientFace2():
+def OrientFace():
 
     # Function to calculate the best-fit plane from points
     def best_fit_plane(points):
@@ -232,8 +195,8 @@ def OrientFace2():
         # Translate the object to make the centroid at the origin
         obj.location -= obj.matrix_world @ centroid
 
-    else:
-        print("No faces selected. Please select a face in Edit Mode.")
+        else:
+            print("No faces selected. Please select a face in Edit Mode.")
     return 
 
 def Nurbs():
@@ -316,7 +279,7 @@ DrawRectangle(imported_object) #integrated and working
 GenerateBust(imported_object) #integrated and working
 AddThickness(imported_object) #integrated and working 
 SmoothSurface(imported_object) #integrated and working
-OrientFace("Cube")
+OrientFace()
 Nurbs()
 ManualAdjustment()
 GenerateClippedSurface()
