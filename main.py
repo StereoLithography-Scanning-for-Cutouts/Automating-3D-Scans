@@ -65,7 +65,6 @@ def import_glb():
 
     return
 
-
 def SelectMesh():
     # Get the imported object
     imported_object = bpy.context.selected_objects[0]
@@ -99,6 +98,7 @@ def GenerateBust(imported_object):
     #At this point the cube should be looking like the imported scan. Further modifications will be applied to the cube instead so make sure that the nameing is consistent 
 
     return
+
 def AddThickness(imported_object):
     #Get the cube object
     cube_object = bpy.context.object
@@ -138,7 +138,6 @@ def SmoothSurface(imported_object):
 
     return
     
-
 def OrientFace():
 
     # Function to calculate the best-fit plane from points
@@ -195,8 +194,8 @@ def OrientFace():
         # Translate the object to make the centroid at the origin
         obj.location -= obj.matrix_world @ centroid
 
-        else:
-            print("No faces selected. Please select a face in Edit Mode.")
+    else:
+        print("No faces selected. Please select a face in Edit Mode.")
     return 
 
 def Nurbs():
@@ -210,7 +209,7 @@ def ManualAdjustment():
     return
 
 def GenerateClippedSurface():
-    returns
+    return
 
 def GenerateNegative():
     # Add a new cube  
